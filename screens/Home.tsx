@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Category, Transaction } from "../types";
 import { useSQLiteContext } from "expo-sqlite";
+import TransactionList from "../components/ui/TransactionList";
 
 const Home = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
@@ -22,11 +23,21 @@ const Home = () => {
     //console.log(result);
     setTransactions(result);
   }
+
+  async function deleteTransaction(id: number) {
+    db.withTransactionAsync(async () => {
+      await db.runAsync(`DELETE FROM Transactions WHERE id = ?;`, [id]);
+      await getData();
+    });
+  }
+
   return (
     <View style={{ marginTop: 150 }}>
-      {transactions.map((t, i) => (
-        <Text key={t.id}>{t.description}</Text>
-      ))}
+      <TransactionList
+        categories={categories}
+        transactions={transactions}
+        deleteTransaction={deleteTransaction}
+      />
     </View>
   );
 };
