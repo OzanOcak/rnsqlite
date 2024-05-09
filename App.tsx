@@ -4,6 +4,13 @@ import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
 import React from "react";
+import { SQLiteProvider } from "expo-sqlite";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+import Home from "./screens/Home";
+
+const Stack = createNativeStackNavigator();
 
 const loadDatabase = async () => {
   const dbName = "mySQLiteDB.db";
@@ -38,10 +45,29 @@ export default function App() {
       </View>
     );
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <React.Suspense
+        fallback={
+          <View style={{ flex: 1 }}>
+            <ActivityIndicator size={"large"} />
+            <Text>Loading Database...</Text>
+          </View>
+        }
+      >
+        <SQLiteProvider databaseName="mySQLiteDB.db" useSuspense>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerTitle: "Budget Buddy",
+                headerLargeTitle: true,
+              }}
+            />
+          </Stack.Navigator>
+        </SQLiteProvider>
+      </React.Suspense>
+    </NavigationContainer>
   );
 }
 
