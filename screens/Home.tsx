@@ -19,11 +19,14 @@ const Home = () => {
     const result = await db.getAllAsync<Transaction>(
       `SELECT * FROM Transactions ORDER BY date DESC;`
     );
-    console.log(result);
+    //console.log(result);
+    setTransactions(result);
   }
   return (
-    <View>
-      <Text>Home</Text>
+    <View style={{ marginTop: 150 }}>
+      {transactions.map((t, i) => (
+        <Text key={t.id}>{t.description}</Text>
+      ))}
     </View>
   );
 };
