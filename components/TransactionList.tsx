@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import { Category, Transaction } from "../../types";
+import { Category, Transaction } from "../types";
+import TransactionListItem from "./TransactionListItem";
 
 export default function TransactionList({
   transactions,
@@ -22,9 +23,10 @@ export default function TransactionList({
             activeOpacity={0.7}
             onLongPress={() => deleteTransaction(transaction.id)}
           >
-            <Text>
-              {transaction.description} - amount: {transaction.id}
-            </Text>
+            <TransactionListItem
+              transaction={transaction}
+              categoryInfo={categoryForCurrentItem}
+            />
           </TouchableOpacity>
         );
       })}

@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Category, Transaction } from "../types";
 import { useSQLiteContext } from "expo-sqlite";
-import TransactionList from "../components/ui/TransactionList";
+import TransactionList from "../components/TransactionList";
 
 const Home = () => {
   const [categories, setCategories] = React.useState<Category[]>([]);
